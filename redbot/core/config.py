@@ -988,7 +988,7 @@ class Config(metaclass=ConfigMeta):
             The guild's Group object.
 
         """
-        return self._get_base_group(self.GUILD, str(guild.id))
+        return self._get_base_group(self.GUILD, int(guild.id))
 
     def channel_from_id(self, channel_id: int) -> Group:
         """Returns a `Group` for the given channel id.
