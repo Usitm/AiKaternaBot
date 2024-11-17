@@ -555,7 +555,10 @@ def humanize_list(
 
     """
 
-    return babel_list(items, style=style, locale=get_babel_locale(locale))
+    try:
+        return babel_list(items, style=style, locale=get_babel_locale(locale))
+    except ValueError:
+        return ', '.join(items) 
 
 
 def format_perms_list(perms: discord.Permissions) -> str:
