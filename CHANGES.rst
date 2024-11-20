@@ -1,5 +1,309 @@
 .. Red changelogs
 
+Redbot 3.5.13 (2024-08-27)
+==========================
+
+| Thanks to all these amazing people that contributed to this release:
+| :ghuser:`aikaterna`, :ghuser:`Guyonsteroids`, :ghuser:`Jackenmen`, :ghuser:`Kowlin`
+
+Read before updating
+--------------------
+
+#. Information for Audio users that are using an external Lavalink instance (if you don't know what that is, you should skip this point):
+
+    We've updated our default application.yml file and you should update your instance's ``application.yml`` accordingly.
+    More specifically, we bumped the version of YT source plugin.
+    `Download Red 3.5.13's default application.yml file <https://github.com/Cog-Creators/Red-DiscordBot/releases/download/3.5.13/Red-DiscordBot-3.5.13-default-lavalink-application.yml>`__
+
+End-user changelog
+------------------
+
+Changes
+*******
+
+- **Core - Dependencies** - Red's dependencies have been bumped (:issue:`6436`)
+
+Fixes
+*****
+
+- **Cogs - Audio** - Updated Audio to support planned changes to Discord API scheduled for November (:issue:`6435`)
+- **Cogs - Audio** - Fixed YT live stream detection (:issue:`6435`)
+- **Cogs - Audio** - Fixed Red erroneously trying to send a message to a notification channel when one is not set (:issue:`6429`)
+- **Cogs - Trivia - Lists** - Fixed spelling of Steven Spielberg's first name in the ``entertainment`` trivia list (:issue:`6434`)
+
+----
+
+Redbot 3.5.12 (2024-08-08)
+==========================
+
+| Thanks to all these amazing people that contributed to this release:
+| :ghuser:`aikaterna`, :ghuser:`Jackenmen`
+
+Read before updating
+--------------------
+
+#. Information for Audio users that are using an external Lavalink instance (if you don't know what that is, you should skip this point):
+
+    We've updated our default application.yml file and you should update your instance's ``application.yml`` accordingly.
+    More specifically, we bumped the version of YT source plugin.
+    `Download Red 3.5.12's default application.yml file <https://github.com/Cog-Creators/Red-DiscordBot/releases/download/3.5.12/Red-DiscordBot-3.5.12-default-lavalink-application.yml>`__
+
+End-user changelog
+------------------
+
+Fixes
+*****
+
+- **Cogs - Audio** - Fixed the ``[p]llset secured`` command failing to send the response message (:issue:`6423`)
+- **Cogs - Audio** - Fixed some age-restricted YT tracks not playing (:issue:`6424`)
+
+----
+
+Redbot 3.5.11 (2024-08-04)
+==========================
+
+| Thanks to all these amazing people that contributed to this release:
+| :ghuser:`aikaterna`, :ghuser:`anopem`, :ghuser:`Flame442`, :ghuser:`japandotorg`, :ghuser:`Jackenmen`, :ghuser:`Kowlin`, :ghuser:`palmtree5`, :ghuser:`yamikaitou`
+
+Read before updating
+--------------------
+
+#. Information for Audio users that are using an external Lavalink instance (if you don't know what that is, you should skip this point):
+
+    We've updated our default application.yml file and you should update your instance's ``application.yml`` accordingly.
+    More specifically, we bumped the version of YT source plugin and added new plugin configuration.
+    `Download Red 3.5.11's default application.yml file <https://github.com/Cog-Creators/Red-DiscordBot/releases/download/3.5.11/Red-DiscordBot-3.5.11-default-lavalink-application.yml>`__
+
+End-user changelog
+------------------
+
+Changes
+*******
+
+- **Core** - Menus sent in ephemeral messages will now be deleted the same way menus in normal messages do (:issue:`6304`)
+- **Core - Dependencies** - Red's dependencies have been bumped (:issue:`6417`)
+
+Fixes
+*****
+
+- **Core - RPC** - RPC is now forcefully shut down after 2 minutes, if it cannot shutdown gracefully (:issue:`6391`, :issue:`6412`)
+- |cool| **Cogs - Audio** - Fixed some of the recent YT playback issues (:issue:`6414`, :issue:`6415`)
+- **Cogs - Mutes** - Fixed the cog failing to unmute a user, if they were muted by someone who no longer has permissions to mute that user (:issue:`6376`, :issue:`6411`)
+- **Cogs - Streams** - Fixed the viewer count for Twitch streams (:issue:`6413`)
+
+Developer changelog
+-------------------
+
+Additions
+*********
+
+- **Core - App Commands Package** - Added `app_commands.UserFeedbackCheckFailure` exception allowing the cog creators to return non-default error message when the check fails (:issue:`6397`)
+
+Documentation changes
+---------------------
+
+Changes
+*******
+
+- Updated instructions for installing the development version of Red in `guide_cog_creation` (:issue:`6408`)
+- Updated the contents of the ``red.plist`` file in the `autostart_mac` document to use no resource limitations, same as regular applications (:issue:`6416`)
+
+----
+
+Redbot 3.5.10 (2024-07-10)
+==========================
+
+| Thanks to all these amazing people that contributed to this release:
+| :ghuser:`aikaterna`, :ghuser:`Flame442`, :ghuser:`Jackenmen`, :ghuser:`Kowlin`, :ghuser:`SeaswimmerTheFsh`, :ghuser:`TrustyJAID`, :ghuser:`yamikaitou`
+
+Read before updating
+--------------------
+
+#. This release fixes a security issue in one of the APIs we provide for 3rd-party cog creators. See `Security changelog below <important-3510-1>` for more information.
+#. Following operating systems are no longer supported as they have already reached their end of life:
+
+    - CentOS 7
+    - CentOS Stream 8
+    - Fedora 38
+    - versions of RHEL/Alma Linux/Oracle Linux/Rocky Linux 8 older than 8.8
+    - versions of RHEL/Alma Linux/Oracle Linux/Rocky Linux 9 older than 9.2
+
+#. Information for Audio users that are using an external Lavalink instance (if you don't know what that is, you should skip this point):
+
+    We've updated our default application.yml file and you should update your instance's ``application.yml`` accordingly.
+    More specifically, we switched from using the built-in YT source to YT source plugin.
+    `Download Red 3.5.10's default application.yml file <https://github.com/Cog-Creators/Red-DiscordBot/releases/download/3.5.10/Red-DiscordBot-3.5.10-default-lavalink-application.yml>`__
+
+End-user changelog
+------------------
+
+.. _important-3510-1:
+
+Security
+********
+
+- **Core** - Fixed incorrect authorization in one of the utilities provided to 3rd-party cog creators (`commands.can_manage_channel()`) resulting in anyone being authorized to run a command using it, if the command has no other permission controls. None of the core commands or core cogs are affected. The maintainers of the project are not aware of any public 3rd-party cog utilizing this API at the time of writing this changelog. `Full security advisory can be found on our GitHub <https://github.com/Cog-Creators/Red-DiscordBot/security/advisories/GHSA-5jq8-q6rj-9gq4>`__.
+
+Additions
+*********
+
+- **Core - Bot Commands** - Added ``[p]set bot banner`` command for setting the bot's banner (:issue:`6321`, :issue:`6401`)
+
+Changes
+*******
+
+- **Core** - Red's ``--team-members-are-owners`` flag now only considers Team Owner, Admins, and Developers as bot owners (:issue:`6401`)
+- **Core - Dependencies** - Red's dependencies have been bumped (:issue:`6402`)
+- **Cogs - Audio** - Updated the cog to configure managed Lavalink node to use YT source plugin instead of the built-in, no longer supported, implementation (:issue:`6373`)
+- **Cogs - Filter** - The cog now checks poll contents and attachment alt text for filtered words (:issue:`6401`)
+
+Fixes
+*****
+
+- **Core** - Fixed command autocompletion not showing any proper result (error message) when bot's global checks (channel/server ignores, allowlist/blocklist) do not pass (:issue:`6374`, :issue:`6375`)
+- **Cogs - Audio** - Fixed one of the recent YT playback issues (:issue:`6373`)
+
+Developer changelog
+-------------------
+
+Changes
+*******
+
+- |cool| **Core - Dependencies** - Bumped ``discord.py`` to version 2.4.0 (:issue:`6401`)
+
+Documentation changes
+---------------------
+
+Additions
+*********
+
+- Added Ubuntu 24.04 install guide (:issue:`6364`)
+
+Changes
+*******
+
+- Bumped Python version used by Arch Linux, RHEL 8, and RHEL 9 install guides to 3.11 (:issue:`6386`)
+- Removed a mention of the Atom editor from the list of the recommended editor now that it's discontinued (:issue:`6388`)
+
+Removals
+********
+
+- Removed all mentions of pyenv now that the last OS using it (CentOS 7) is no longer supported (:issue:`6386`)
+
+Fixes
+*****
+
+- Fixed Java instructions in macOS install guide (:issue:`6368`)
+- Fixed list of required ``info.json`` keys from the `guide_cog_creators` document (:issue:`6382`)
+
+----
+
+Redbot 3.5.9 (2024-04-21)
+=========================
+
+| Thanks to all these amazing people that contributed to this release:
+| :ghuser:`aikaterna`, :ghuser:`giplgwm`, :ghuser:`Jackenmen`, :ghuser:`Kuro-Rui`, :ghuser:`Kowlin`, :ghuser:`palmtree5`, :ghuser:`TrustyJAID`, :ghuser:`Zephyrkul`
+
+Read before updating
+--------------------
+
+#. Information for Audio users that are using an external Lavalink instance (if you don't know what that is, you should skip this point):
+
+    Red 3.5.9 uses a new Lavalink jar that you will need to manually update from `our GitHub <https://github.com/Cog-Creators/Lavalink-Jars/releases/tag/3.7.11%2Bred.3>`__.
+
+End-user changelog
+------------------
+
+Fixes
+*****
+
+- **Core** - Fixed inaccuracies in error messages shown when the user passes a time duration outside accepted range (:issue:`6357`)
+- **Core** - Commands that ask the user to "Type ``more`` to continue" when they return long output will now typically wait for 60 seconds rather than just 15 (:issue:`6346`, :issue:`6352`)
+- |cool| **Cogs - Audio** - Resolved recent issues where the player would be stuck at 0:00 on some tracks (:issue:`6358`)
+- **Cogs - Mutes** - The Mutes cog will no longer erroneously accept very large values (i.e. hundreds of years) for mute durations (:issue:`6353`)
+- **Cogs - Mutes** - To avoid ambiguity, the Mutes cog will now parse the time only when it's placed at the beginning, the end, or directly after ``t=``/``time=`` prefix in the mute command arguments (:issue:`6274`, :issue:`6349`)
+- **Cogs - Streams** - The schedule announcements for YT streams will now use relative Discord timestamps (:issue:`6257`, :issue:`6264`)
+
+Developer changelog
+-------------------
+
+Changes
+*******
+
+- **Core - Commands Package** - Functions and converters for parsing text into `datetime.timedelta` or `dateutil.relativedelta.relativedelta` in the `redbot.core.commands.converter` package now support negative values when ``minimum`` parameter is set accordingly (:issue:`6349`)
+- **Core - Utils Package** - The `redbot.core.utils.chat_formatting.humanize_timedelta()` function now allows specifying the maximum number of different units that will be present in the final string with the ``maximum_units`` parameter (:issue:`6350`)
+- **Core - Utils Package** - The `redbot.core.utils.chat_formatting.humanize_timedelta()` function now supports formatting negative `datetime.timedelta` instances. New ``negative_format`` parameter was added to allow specifying a different way of formatting negative `datetime.timedelta` instances (:issue:`6350`)
+
+Documentation changes
+---------------------
+
+Fixes
+*****
+
+- Updated links to the Lavalink repository (:issue:`6356`)
+
+----
+
+Redbot 3.5.8 (2024-04-01)
+=========================
+
+| Thanks to all these amazing people that contributed to this release:
+| :ghuser:`aikaterna`, :ghuser:`Flame442`, :ghuser:`Jackenmen`, :ghuser:`Kreusada`, :ghuser:`TrustyJAID`
+
+Read before updating
+--------------------
+
+#. Server-wide mutes in the Mutes cog can no longer be performed using channel permissions (overrides). Instead, the cog will now use Discord's native server timeout functionality when a mute role is not set. Role mutes and channel-specific mutes are not affected.
+
+    Red 3.5.7 and lower allowed usage of channel permissions (overrides) for server-wide mutes when ``[p]muteset forcerole`` setting was explicitly disabled and no mute role was set for the server. This behavior is no longer available and now, when mute role is not set, server-wide mutes will be performed using Discord's native server timeouts.
+
+    If you were one of the few users that chose to use channel permissions (overrides) for server-wide mutes, please note that the existing server mutes will now be considered channel-specific mutes and can only be removed with ``[p]channelunmute`` (and will be automatically removed after timeout elapses, if they have one set). If you want to quickly remove all channel-specific mutes (that were previously server-wide mutes) for a user, you can use the hidden ``[p]forceunmute <user>`` command that has been provided to ease the migration.
+
+#. Information for Audio users that are using an external Lavalink instance (if you don't know what that is, you should skip this point):
+
+    Red 3.5.8 uses a new Lavalink jar that you will need to manually update from `our GitHub <https://github.com/Cog-Creators/Lavalink-Jars/releases/tag/3.7.11%2Bred.2>`__.
+
+End-user changelog
+------------------
+
+Additions
+*********
+
+- |cool| **Cogs - Mutes** - Added support for Discord's native server timeouts. The cog will now use those when a mute role is not set or, when the new ``[p]timeout`` command is used (:issue:`5604`)
+- **Cogs - Trivia** - Trivia lists can now have a description as documented in :ref:`guide_trivia_list_creation` (:issue:`5897`)
+- |cool| **Cogs - Trivia** - Added ``[p]trivia info`` command for getting information about the specified Trivia list, including its setting overrides (:issue:`3978`, :issue:`5897`)
+
+Changes
+*******
+
+- **Core - Bot Commands** - The ``[p]addpath`` command will now detect potentially incorrect paths and prompt for confirmation (:issue:`6330`)
+- **Core - Bot Commands** - The ``[p]addpath`` command will now error out when the user tries adding a path that's part of the core path or instance's data path (:issue:`6330`)
+- **Core - Dependencies** - Red's dependencies have been bumped (:issue:`6333`)
+- **Cogs - Audio** - The cog will now log the reason for Lavalink.jar being re-downloaded (:issue:`6334`)
+- |cool| **Cogs - Mutes** - The ``[p]activemutes`` command will now use menus for pagination (:issue:`6266`)
+
+Removals
+********
+
+- **Cogs - Mutes** - Server-wide mutes can no longer be performed using channel permissions (overrides). Server timeouts or mute role can be used instead (:issue:`5604`)
+- **Cogs - Mutes** - The ``[p]muteset forcerole`` command and the setting it adjusted has been removed. Server timeouts will now be used for a server, if it has no mute role set (:issue:`5604`)
+
+Fixes
+*****
+
+- |cool| **Cogs - Audio** - Resolves recent issues where the wrong video was served for YT playback (:issue:`6337`, :issue:`6340`)
+- **Cogs - Audio** - Fixed Lavalink.jar downloading for RC and Red-specific versions (:issue:`6334`)
+
+Documentation changes
+---------------------
+
+Additions
+*********
+
+- |cool| Added install instructions for Amazon Linux 2023 (:issue:`6331`)
+
+----
+
 Redbot 3.5.7 (2024-03-24)
 =========================
 
