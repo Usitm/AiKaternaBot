@@ -373,7 +373,7 @@ class Warnings(commands.Cog):
     async def warn(
         self,
         ctx: commands.Context,
-        member: discord.Member,
+        identifier: str, 
         points: UserInputOptional[int] = 1,
         *,
         reason: str,
@@ -386,6 +386,19 @@ class Warnings(commands.Cog):
         or a custom reason if ``[p]warningset allowcustomreasons`` is set.
         """
         guild = ctx.guild
+
+        """User can be warned by ID or warned by their name."""
+        if identifier.isdigit():
+            member = ctx.guild.get_member(int(identifier))
+            # await ctx.send("Got member by ID")
+        else:
+            member = ctx.guild.get_member_named(identifier)
+            # await ctx.send("Got member by name")
+
+        if not member:
+            await ctx.send(f"User `{identifier}` not found.")
+            return
+        
         if member == ctx.author:
             return await ctx.send(_("You cannot warn yourself."))
         if member.bot:
