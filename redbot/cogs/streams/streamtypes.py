@@ -373,7 +373,6 @@ class TwitchMeta(Stream):
 
 
 class TwitchStream(TwitchMeta):
-
     token_name = "twitch"
     platform_name = "Twitch"
 
