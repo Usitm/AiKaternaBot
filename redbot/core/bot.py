@@ -887,7 +887,8 @@ class Red(
                 raise TypeError("Can't check permissions for non-private PartialMessageable.")
             is_private = True
         if isinstance(ctx, discord.Interaction):
-            perms = ctx.app_permissions
+            ctx: discord.Interaction
+            perms = ctx.permissions
             # The permissions here are always linked to the interaction author &
             # the channel it originated from.
         else:
