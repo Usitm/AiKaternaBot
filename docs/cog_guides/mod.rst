@@ -268,6 +268,28 @@ and reason as to why they were kicked/banned.
 
 .. _mod-command-modset-hierarchy:
 
+"""""""""
+modset reason
+"""""""""
+
+**Syntax**
+
+.. code-block:: none
+
+    [p]modset reason [enabled]
+
+**Description**
+
+Toggle whether a reason is required for mod actions.
+        
+If this is enabled, the bot will require a reason to be provided for all mod actions.
+
+**Arguments**
+
+* ``[enabled]``: Whether a reason should be required when performing mod actions. |bool-input|
+
+.. _mod-command-modset-hierarchy:
+
 """"""""""""""""
 modset hierarchy
 """"""""""""""""
