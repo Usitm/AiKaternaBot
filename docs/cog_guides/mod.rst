@@ -266,17 +266,17 @@ and reason as to why they were kicked/banned.
 
 * ``[enabled]``: Whether a message should be sent to a user when they are kicked/banned. |bool-input|
 
-.. _mod-command-modset-hierarchy:
+.. _mod-command-modset-reason:
 
-"""""""""
-modset reason
-"""""""""
+""""""""""""""""""""
+modset requirereason
+""""""""""""""""""""
 
 **Syntax**
 
 .. code-block:: none
 
-    [p]modset reason [enabled]
+    [p]modset requirereason [enabled]
 
 **Description**
 

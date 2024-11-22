@@ -372,8 +372,7 @@ class ModSettings(MixinMeta):
 
     @modset.command()
     @commands.guild_only()
-    # add command for setting reason requirement for mod actions
-    async def reason(self, ctx: commands.Context, enabled: bool = None):
+    async def requirereason(self, ctx: commands.Context, enabled: bool = None):
         """
         Toggle whether a reason is required for mod actions.
 
