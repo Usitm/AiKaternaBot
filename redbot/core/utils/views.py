@@ -269,6 +269,11 @@ class SimpleMenu(discord.ui.View):
                 Send the message ephemerally. This only works
                 if the context is from a slash command interaction.
         """
+        if self.use_select_menu and self.source.is_paginating():
+            self.remove_item(self.select_menu)
+            # we added a default one in init so we want to remove it and add any changes here
+            self.select_menu = self._get_select_menu()
+            self.add_item(self.select_menu)
         self._fallback_author_to_ctx = True
         if user is not None:
             self.author = user
@@ -285,6 +290,11 @@ class SimpleMenu(discord.ui.View):
             user: `discord.User`
                 The user that will be direct messaged by the bot.
         """
+        if self.use_select_menu and self.source.is_paginating():
+            self.remove_item(self.select_menu)
+            # we added a default one in init so we want to remove it and add any changes here
+            self.select_menu = self._get_select_menu()
+            self.add_item(self.select_menu)
         self.author = user
         kwargs = await self.get_page(self.current_page)
         self.message = await user.send(**kwargs)
