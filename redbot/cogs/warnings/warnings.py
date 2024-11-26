@@ -386,17 +386,31 @@ class Warnings(commands.Cog):
         or a custom reason if ``[p]warningset allowcustomreasons`` is set.
         """
         guild = ctx.guild
-
+        member = None
+        user = None
         """User can be warned by ID or warned by their name."""
+        
         if identifier.isdigit():
             member = ctx.guild.get_member(int(identifier))
             # await ctx.send("Got member by ID")
         else:
             member = ctx.guild.get_member_named(identifier)
             # await ctx.send("Got member by name")
-
         if not member:
-            await ctx.send(f"User `{identifier}` not found.")
+            await ctx.send(f"User with ID `{identifier}` was not found in discord guild.")
+
+            # Because he has not been found, he will be banned.
+            try:
+                user = await self.bot.fetch_user(int(identifier))
+                await ctx.send(f"User `{user.name}` is not in the server but has been found globally.")
+                await ctx.guild.ban(user, reason=reason)
+                await ctx.send(f"User `{user.name}` has been banned for: {reason}")
+            except discord.Forbidden:
+                await ctx.send("I don't have permission to ban this user.")
+            except discord.NotFound:
+                await ctx.send(f"User with ID `{identifier}` not found globally.")
+                return
+
             return
         
         if member == ctx.author:
@@ -413,7 +427,6 @@ class Warnings(commands.Cog):
             )
         guild_settings = await self.config.guild(ctx.guild).all()
         custom_allowed = guild_settings["allow_custom_reasons"]
-
         reason_type = None
         async with self.config.guild(ctx.guild).reasons() as registered_reasons:
             if (reason_type := registered_reasons.get(reason.lower())) is None:
