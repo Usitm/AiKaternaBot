@@ -373,7 +373,7 @@ class Warnings(commands.Cog):
     async def warn(
         self,
         ctx: commands.Context,
-        identifier: str, 
+        identifier: str,
         points: UserInputOptional[int] = 1,
         *,
         reason: str,
@@ -389,7 +389,7 @@ class Warnings(commands.Cog):
         member = None
         user = None
         """User can be warned by ID or warned by their name."""
-        
+
         if identifier.isdigit():
             member = ctx.guild.get_member(int(identifier))
             # await ctx.send("Got member by ID")
@@ -397,22 +397,41 @@ class Warnings(commands.Cog):
             member = ctx.guild.get_member_named(identifier)
             # await ctx.send("Got member by name")
         if not member:
-            await ctx.send(f"User with ID `{identifier}` was not found in discord guild.")
+            await ctx.send(f"User `{identifier}` not found in discord guild")
 
             # Because he has not been found, he will be banned.
             try:
                 user = await self.bot.fetch_user(int(identifier))
-                await ctx.send(f"User `{user.name}` is not in the server but has been found globally.")
+                await ctx.send(
+                    f"User `{user.name}` is not in the server but has been found globally. Would you like to ban them instead? [Y/N]"
+                )
+                try:
+
+                    def check(m):
+                        return (
+                            m.author == ctx.author
+                            and m.channel == ctx.channel
+                            and m.content.lower() in {"y", "n"}
+                        )
+
+                    response = await self.bot.wait_for("message", check=check, timeout=30.0)
+                    if response.content.lower() == "y":
+                        await ctx.guild.ban(user, reason=reason)
+                        await ctx.send(f"User `{user.name}` has been banned for: {reason}")
+                    elif response.content.lower() == "n":
+                        await ctx.send("No action taken.")
+                    else:
+                        # This should not happen due to the check, but it's good to cover edge cases
+                        await ctx.send("I do not recognize that answer. No action taken.")
+                except asyncio.TimeoutError:
+                    await ctx.send("No response received. No action taken.")
                 await ctx.guild.ban(user, reason=reason)
-                await ctx.send(f"User `{user.name}` has been banned for: {reason}")
             except discord.Forbidden:
                 await ctx.send("I don't have permission to ban this user.")
             except discord.NotFound:
                 await ctx.send(f"User with ID `{identifier}` not found globally.")
                 return
-
             return
-        
         if member == ctx.author:
             return await ctx.send(_("You cannot warn yourself."))
         if member.bot:
