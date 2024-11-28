@@ -510,7 +510,8 @@ class Streams(commands.Cog):
 
         await self.config.refresh_timer.set(refresh_time)
         await ctx.send(
-            _("Refresh timer set to {refresh_time} seconds").format(refresh_time=refresh_time))
+            _("Refresh timer set to {refresh_time} seconds").format(refresh_time=refresh_time)
+        )
 
     @streamset.command()
     @commands.is_owner()
@@ -614,32 +615,31 @@ class Streams(commands.Cog):
             if stream.name.lower() == streamer_name.lower():
                 try:
                     await ctx.send(
-                        _(
-                            "`{}`'s nomention message is set as: `{}`").format(
-                                streamer_name, stream.nomention_message
-                            )
+                        _("`{}`'s nomention message is set as: `{}`").format(
+                            streamer_name, stream.nomention_message
                         )
+                    )
                 except AttributeError:
                     await ctx.send(
-                        _("`{}` does not have a nomention message.").format(streamer_name))
+                        _("`{}` does not have a nomention message.").format(streamer_name)
+                    )
                 try:
                     await ctx.send(
-                        _(
-                            "`{}`'s mention message is set as: `{}` to `{}`").format(
-                                streamer_name, stream.mention_message, stream.who_to_mention
-                            )
+                        _("`{}`'s mention message is set as: `{}` to `{}`").format(
+                            streamer_name, stream.mention_message, stream.who_to_mention
                         )
+                    )
                 except AttributeError:
                     await ctx.send(
-                        _("`{}` does not have a mention message.").format(streamer_name))
+                        _("`{}` does not have a mention message.").format(streamer_name)
+                    )
                 return
 
         await ctx.send(
             _(
-                "Streamer `{}` is not registered and therefore does not have any custom messages.").format(
-                    streamer_name
-                )
-            )
+                "Streamer `{}` is not registered and therefore does not have any custom messages."
+            ).format(streamer_name)
+        )
         return
 
     # @checks.mod_or_permissions(manage_channels=True)
@@ -687,11 +687,10 @@ class Streams(commands.Cog):
                     msg = to_mention + " " + msg
                     stream.nomention_message = msg
                     await ctx.send(
-                        _(
-                            "Custom nomention message streamer `{streamer}` set").format(
-                                streamer=streamer_name
-                            )
+                        _("Custom nomention message streamer `{streamer}` set").format(
+                            streamer=streamer_name
                         )
+                    )
                     await self.save_streams()
                     break
                 else:
@@ -701,10 +700,9 @@ class Streams(commands.Cog):
         if not_found:
             await ctx.send(
                 _(
-                    "Streamer `{streamer}` not registered, please look at `[p]streamalert help`").format(
-                        streamer=streamer_name
-                    )
-                )
+                    "Streamer `{streamer}` not registered, please look at `[p]streamalert help`"
+                ).format(streamer=streamer_name)
+            )
             return
 
     @message.command(name="remove")
@@ -751,7 +749,8 @@ class Streams(commands.Cog):
 
         if not_found:
             await ctx.send(
-                _("Streamer `{}` not registered. No message(s) to remove.").format(name))
+                _("Streamer `{}` not registered. No message(s) to remove.").format(name)
+            )
             return
 
         await self.save_streams()
@@ -770,32 +769,31 @@ class Streams(commands.Cog):
             if stream.name.lower() == streamer_name.lower():
                 try:
                     await ctx.send(
-                        _(
-                            "`{}`'s nomention message is set as: `{}`").format(
-                                streamer_name, stream.nomention_message
-                            )
+                        _("`{}`'s nomention message is set as: `{}`").format(
+                            streamer_name, stream.nomention_message
                         )
+                    )
                 except AttributeError:
                     await ctx.send(
-                        _("`{}` does not have a nomention message.").format(streamer_name))
+                        _("`{}` does not have a nomention message.").format(streamer_name)
+                    )
                 try:
                     await ctx.send(
-                        _(
-                            "`{}`'s mention message is set as: `{}` to `{}`").format(
-                                streamer_name, stream.mention_message, stream.who_to_mention
-                            )
+                        _("`{}`'s mention message is set as: `{}` to `{}`").format(
+                            streamer_name, stream.mention_message, stream.who_to_mention
                         )
+                    )
                 except AttributeError:
                     await ctx.send(
-                        _("`{}` does not have a mention message.").format(streamer_name))
+                        _("`{}` does not have a mention message.").format(streamer_name)
+                    )
                 return
 
         await ctx.send(
             _(
-                "Streamer `{}` is not registered and therefore does not have any custom messages.").format(
-                    streamer_name
-                )
-            )
+                "Streamer `{}` is not registered and therefore does not have any custom messages."
+            ).format(streamer_name)
+        )
         return
 
     # @checks.mod_or_permissions(manage_channels=True)
@@ -1226,11 +1224,10 @@ class Streams(commands.Cog):
                                 channel.guild
                             ).live_message_mention()
                             if hasattr(stream, "mention_message"):
-                                content = _(
-                                    "{mention}, {mention_message}").format(
-                                        mention=stream.who_to_mention,
-                                        mention_message=stream.mention_message,
-                                    )
+                                content = _("{mention}, {mention_message}").format(
+                                    mention=stream.who_to_mention,
+                                    mention_message=stream.mention_message,
+                                )
                             elif alert_msg:
                                 content = alert_msg  # Stop bad things from happening here...
                                 content = content.replace(
