@@ -427,9 +427,9 @@ class Warnings(commands.Cog):
                     "The person you're trying to warn is equal or higher than you in the discord hierarchy, you cannot warn them."
                 )
             )
-
         guild_settings = await self.config.guild(ctx.guild).all()
         custom_allowed = guild_settings["allow_custom_reasons"]
+
         reason_type = None
         async with self.config.guild(ctx.guild).reasons() as registered_reasons:
             if (reason_type := registered_reasons.get(reason.lower())) is None:
