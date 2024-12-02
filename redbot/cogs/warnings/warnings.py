@@ -410,9 +410,9 @@ class Warnings(commands.Cog):
                 await confirm.message.add_reaction("\N{WHITE HEAVY CHECK MARK}")
 
             except discord.Forbidden:
-                await ctx.send("I don't have permission to ban this user.")
+                await ctx.send(_("I don't have permission to ban this user."))
             except discord.HTTPException:
-                await ctx.send("An error occurred while trying to ban the user.")
+                await ctx.send(_("An error occurred while trying to ban the user."))
             return
 
         if member == ctx.author:
