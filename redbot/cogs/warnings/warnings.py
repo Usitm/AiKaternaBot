@@ -398,7 +398,7 @@ class Warnings(commands.Cog):
             try:
                 confirm = ConfirmView(ctx.author, timeout=30)
                 confirm.message = await ctx.send(
-                    f"User `{user}` is not in the server but has been found globally. Would you like to ban them instead?",
+                    _("User `{user}` is not in the server. Would you like to ban them instead?").format(user=user),
                     view=confirm,
                 )
                 await confirm.wait()
