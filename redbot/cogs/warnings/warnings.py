@@ -405,7 +405,7 @@ class Warnings(commands.Cog):
                 elif confirm.result:
                     await ctx.guild.ban(user_obj, reason=reason)
                 else:
-                    confirm.message = await ctx.send("No action taken.")
+                    confirm.message = await ctx.send(_("No action taken."))
 
                 await confirm.message.add_reaction("\N{WHITE HEAVY CHECK MARK}")
 
