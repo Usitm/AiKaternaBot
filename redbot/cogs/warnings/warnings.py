@@ -392,27 +392,45 @@ class Warnings(commands.Cog):
             member = user
         elif isinstance(user, int):
             if not ctx.channel.permissions_for(ctx.guild.me).ban_members:
-                await ctx.send(_("User {user} is not in the server."),format(user=user))
+                await ctx.send(_("I cannot ban users. Missing the permission to ban members."))
                 return
             user_obj = self.bot.get_user(user) or discord.Object(id=user)
-            try:
-                confirm = ConfirmView(ctx.author, timeout=30)
-                confirm.message = await ctx.send(
-                    _("User `{user}` is not in the server. Would you like to ban them instead?").format(user=user),
-                    view=confirm,
-                )
-                await confirm.wait()
-                if confirm.result:
+
+            confirm = ConfirmView(ctx.author, timeout=30)
+            confirm.message = await ctx.send(
+                _(
+                    "User `{user}` is not in the server. Would you like to ban them instead?"
+                ).format(user=user),
+                view=confirm,
+            )
+            await confirm.wait()
+            if confirm.result:
+                try:
                     await ctx.guild.ban(user_obj, reason=reason)
-                else:
-                    confirm.message = await ctx.send(_("No action taken."))
+                    await modlog.create_case(
+                        self.bot,
+                        guild,
+                        ctx.message.created_at,
+                        "ban",
+                        user,
+                        ctx.author,
+                        reason,
+                        until=None,
+                        channel=None,
+                    )
+                except discord.HTTPException as error:
+                    await ctx.send(
+                        _("An error occurred while trying to ban the user. Error: {error}").format(
+                            error=error
+                        )
+                    )
+            else:
+                confirm.message = await ctx.send(_("No action taken."))
 
+            if ctx.channel.permissions_for(ctx.guild.me).add_reactions:
                 await confirm.message.add_reaction("\N{WHITE HEAVY CHECK MARK}")
-
-            except discord.Forbidden:
-                await ctx.send(_("I don't have permission to ban this user."))
-            except discord.HTTPException:
-                await ctx.send(_("An error occurred while trying to ban the user."))
+            else:
+                await ctx.tick()
             return
 
         if member == ctx.author:
