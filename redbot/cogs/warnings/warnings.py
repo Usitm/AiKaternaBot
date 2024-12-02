@@ -396,7 +396,7 @@ class Warnings(commands.Cog):
                 return
             user_obj = self.bot.get_user(user) or discord.Object(id=user)
             try:
-                confirm = ConfirmView(ctx.author, timeout=10)
+                confirm = ConfirmView(ctx.author, timeout=30)
                 confirm.message = await ctx.send(
                     f"User `{user}` is not in the server but has been found globally. Would you like to ban them instead?",
                     view=confirm,
