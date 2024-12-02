@@ -402,10 +402,7 @@ class Warnings(commands.Cog):
                     view=confirm,
                 )
                 await confirm.wait()
-                if confirm.result is None:
-                    await ctx.send("No response received within 10 seconds. No action taken.")
-                    return
-                elif confirm.result:
+                if confirm.result:
                     await ctx.guild.ban(user_obj, reason=reason)
                 else:
                     confirm.message = await ctx.send(_("No action taken."))
