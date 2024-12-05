@@ -392,7 +392,7 @@ class Warnings(commands.Cog):
             member = user
         elif isinstance(user, int):
             if not ctx.channel.permissions_for(ctx.guild.me).ban_members:
-                await ctx.send(_("I cannot ban users. Missing the permission to ban members."))
+                await ctx.send(_("User {user} is not in the server.").format(user=user))
                 return
             user_obj = self.bot.get_user(user) or discord.Object(id=user)
 
@@ -427,10 +427,7 @@ class Warnings(commands.Cog):
             else:
                 confirm.message = await ctx.send(_("No action taken."))
 
-            if ctx.channel.permissions_for(ctx.guild.me).add_reactions:
-                await confirm.message.add_reaction("\N{WHITE HEAVY CHECK MARK}")
-            else:
-                await ctx.tick()
+            ctx.tick()
             return
 
         if member == ctx.author:
