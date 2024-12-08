@@ -411,7 +411,7 @@ class Warnings(commands.Cog):
                         self.bot,
                         guild,
                         ctx.message.created_at,
-                        "ban",
+                        "hackban",
                         user,
                         ctx.author,
                         reason,
@@ -427,7 +427,7 @@ class Warnings(commands.Cog):
             else:
                 confirm.message = await ctx.send(_("No action taken."))
 
-            ctx.tick()
+            await ctx.tick()
             return
 
         if member == ctx.author:
