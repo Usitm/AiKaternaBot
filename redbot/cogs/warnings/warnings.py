@@ -392,7 +392,7 @@ class Warnings(commands.Cog):
             member = user
         elif isinstance(user, int):
             if not ctx.channel.permissions_for(ctx.guild.me).ban_members:
-                await ctx.send(_("User {user} is not in the server.").format(user=user))
+                await ctx.send(_("User `{user}` is not in the server.").format(user=user))
                 return
             user_obj = self.bot.get_user(user) or discord.Object(id=user)
 
