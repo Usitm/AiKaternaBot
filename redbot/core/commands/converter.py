@@ -51,8 +51,8 @@ __all__ = [
 
 _ = Translator("commands.converter", __file__)
 
-ID_REGEX = re.compile(r"([0-9]{15,20})")
-USER_MENTION_REGEX = re.compile(r"<@!?([0-9]{15,21})>$")
+ID_REGEX = re.compile(r"([0-9]{15,19})")
+USER_MENTION_REGEX = re.compile(r"<@!?([0-9]{15,19})>$")
 
 
 # Taken with permission from
@@ -239,8 +239,16 @@ class RawUserIdConverter(dpy_commands.Converter):
         # are most likely not in the guild.
         # Mentions are supported, but most likely won't ever be in cache.
 
-        if match := ID_REGEX.match(argument) or USER_MENTION_REGEX.match(argument):
-            return int(match.group(1))
+        if match := ID_REGEX.fullmatch(argument) or USER_MENTION_REGEX.fullmatch(argument):
+            user_id = int(match.group(1))
+
+            # Validate user ID range (Discord user IDs are 64-bit integers but must be ≤ 2^63 - 1)
+            if user_id > 9223372036854775807:  # 2^63 - 1
+                raise BadArgument(
+                    f"The ID '{argument}' is too large to be a valid Discord user ID."
+                )
+
+            return user_id
 
         raise BadArgument(_("'{input}' doesn't look like a valid user ID.").format(input=argument))
 
