@@ -117,6 +117,10 @@ class KickBanMixin(MixinMeta):
 
         removed_temp = False
 
+        if reason is None:
+            if await self.config.guild(guild).mod_reason():
+                return False, _("You must provide a reason for the ban.")
+
         if not (0 <= days <= 7):
             return False, _("Invalid days. Must be between 0 and 7.")
 
@@ -303,6 +307,11 @@ class KickBanMixin(MixinMeta):
         author = ctx.author
         guild = ctx.guild
 
+        if reason is None:
+            if await self.config.guild(guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the kick."))
+                return
+
         if author == member:
             await ctx.send(
                 _("I cannot let you do that. Self-harm is bad {emoji}").format(
@@ -427,6 +436,11 @@ class KickBanMixin(MixinMeta):
         banned = []
         errors = {}
         upgrades = []
+
+        if reason is None:
+            if await self.config.guild(ctx.guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the massban."))
+                return
 
         async def show_results():
             text = _("Banned {num} users from the server.").format(
@@ -605,6 +619,11 @@ class KickBanMixin(MixinMeta):
         guild = ctx.guild
         author = ctx.author
 
+        if reason is None:
+            if await self.config.guild(guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the tempban."))
+                return
+
         if author == member:
             await ctx.send(
                 _("I cannot let you do that. Self-harm is bad {}").format("\N{PENSIVE FACE}")
@@ -683,6 +702,11 @@ class KickBanMixin(MixinMeta):
         """Kick a user and delete 1 day's worth of their messages."""
         guild = ctx.guild
         author = ctx.author
+
+        if reason is None:
+            if await self.config.guild(guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the softban."))
+                return
 
         if author == member:
             await ctx.send(
@@ -771,6 +795,11 @@ class KickBanMixin(MixinMeta):
         self, ctx: commands.Context, member: discord.Member, *, reason: str = None
     ):
         """Kick a member from a voice channel."""
+        if reason is None:
+            if await self.config.guild(ctx.guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the voicekick."))
+                return
+
         author = ctx.author
         guild = ctx.guild
         user_voice_state: discord.VoiceState = member.voice
@@ -818,6 +847,11 @@ class KickBanMixin(MixinMeta):
         self, ctx: commands.Context, member: discord.Member, *, reason: str = None
     ):
         """Unban a user from speaking and listening in the server's voice channels."""
+        if reason is None:
+            if await self.config.guild(ctx.guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the voiceunban."))
+                return
+
         user_voice_state = member.voice
         if (
             await self._voice_perm_check(
@@ -859,6 +893,11 @@ class KickBanMixin(MixinMeta):
     @commands.admin_or_permissions(mute_members=True, deafen_members=True)
     async def voiceban(self, ctx: commands.Context, member: discord.Member, *, reason: str = None):
         """Ban a user from speaking and listening in the server's voice channels."""
+        if reason is None:
+            if await self.config.guild(ctx.guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the voiceban."))
+                return
+
         user_voice_state: discord.VoiceState = member.voice
         if (
             await self._voice_perm_check(
@@ -908,6 +947,11 @@ class KickBanMixin(MixinMeta):
         1. Copy it from the mod log case (if one was created), or
         2. Enable Developer Mode, go to Bans in this server's settings, right-click the user and select 'Copy ID'.
         """
+        if reason is None:
+            if await self.config.guild(ctx.guild).mod_reason():
+                await ctx.send(_("You must provide a reason for the unban."))
+                return
+
         guild = ctx.guild
         author = ctx.author
         audit_reason = get_audit_reason(ctx.author, reason, shorten=True)
